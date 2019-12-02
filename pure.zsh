@@ -142,8 +142,10 @@ prompt_pure_preprompt_render() {
 	local symbol_color="%(?.${PURE_PROMPT_SYMBOL_COLOR:-magenta}.red)"
 	local path_formatting="${PURE_PROMPT_PATH_FORMATTING:-%c}"
 
-	# show kube-ps as rpreprompt
-	rpreprompt+="$(kube_ps1)"
+  if typeset -f kube_ps1 > /dev/null; then
+    # function kube_ps1 exists, set as rpreprompt
+	  rpreprompt+="$(kube_ps1)"
+  fi
 
 	# show background jobs
 	preprompt+="%(1j.%F{242}%j %f.)"
