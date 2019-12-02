@@ -65,9 +65,9 @@ prompt_pure_clear_screen() {
 	prompt_pure_preprompt_render precmd
 }
 
-# set STATUS_COLOR: cyan for "insert", green for "normal" mode.
+# set STATUS_COLOR: cyan for "insert", orange for "normal" mode.
 prompt_purer_vim_mode() {
-	STATUS_COLOR="${${KEYMAP/vicmd/green}/(main|viins)/cyan}"
+	STATUS_COLOR="${${KEYMAP/vicmd/orange}/(main|viins)/cyan}"
 	prompt_pure_preprompt_render
 }
 
@@ -128,8 +128,9 @@ prompt_pure_preprompt_render() {
 	local git_color=242
 	[[ -n ${prompt_pure_git_last_dirty_check_timestamp+x} ]] && git_color=red
 
-	# construct preprompt
+	# construct preprompt and rpreprompt
 	local preprompt=""
+	local rpreprompt=""
 
 
 	# add a newline between commands
@@ -140,6 +141,9 @@ prompt_pure_preprompt_render() {
 
 	local symbol_color="%(?.${PURE_PROMPT_SYMBOL_COLOR:-magenta}.red)"
 	local path_formatting="${PURE_PROMPT_PATH_FORMATTING:-%c}"
+
+	# show kube-ps as rpreprompt
+	rpreprompt+="$(kube_ps1)"
 
 	# show background jobs
 	preprompt+="%(1j.%F{242}%j %f.)"
@@ -162,8 +166,10 @@ prompt_pure_preprompt_render() {
 
 	# make sure prompt_pure_last_preprompt is a global array
 	typeset -g -a prompt_pure_last_preprompt
+	typeset -g -a prompt_pure_last_rpreprompt
 
 	PROMPT="$preprompt"
+	RPROMPT="$rpreprompt"
 
 	# if executing through precmd, do not perform fancy terminal editing
 	if [[ "$1" != "precmd" ]]; then
@@ -178,6 +184,7 @@ prompt_pure_preprompt_render() {
 
 	# store both unexpanded and expanded preprompt for comparison
 	prompt_pure_last_preprompt=("$preprompt" "${(S%%)preprompt}")
+	prompt_pure_last_rpreprompt=("$rpreprompt" "${(S%%)rpreprompt}")
 }
 
 prompt_pure_precmd() {

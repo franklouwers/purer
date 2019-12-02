@@ -4,20 +4,31 @@
 
 ![purer](https://cloud.githubusercontent.com/assets/583202/25418314/c3a29bfa-2a18-11e7-8a6f-4c0960ccadfc.png)
 
+It is based on [purer](https://github.com/DFurnes/purer) but adds support for [`kube-ps1`](https://github.com/jonmosco/kube-ps1) as an `RPROMPT`.
+
 ## Install
 
-Can be installed with `npm` or [manually](https://github.com/sindresorhus/pure/blob/master/readme.md#manually). Requires Git 2.0.0+ and ZSH 5.2+.
+Requires Git 2.0.0+ and ZSH 5.2+. Older versions of ZSH are known to work, but they are **not** recommended.
+
+1. I don't care. Install it with whatever tools you want. No hipster-style `npm --global` installation or other bullshit included.
+
+2. Symlink `pure.zsh` to somewhere in [`$fpath`](http://www.refining-linux.org/archives/46/ZSH-Gem-12-Autoloading-functions/) with the name `prompt_pure_setup`.
+
+3. Install [`zsh-async`](https://github.com/mafredri/zsh-async) if it's not installed already.
+
+#### Example
+
+For a user-specific installation (which would not require escalated privileges), simply add a directory to `$fpath` for that user:
 
 ```sh
-$ npm install --global purer-prompt
+# .zshenv or .zshrc
+fpath=( "$HOME/.zfunctions" $fpath )
 ```
 
-Initialize the prompt system (if not so already) and choose `purer`:
+Then install the theme there:
 
-```sh
-# .zshrc
-autoload -U promptinit; promptinit
-prompt purer
+```console
+$ ln -s "$PWD/pure.zsh" "$HOME/.zfunctions/prompt_pure_setup"
 ```
 
 See [Pure's readme](https://github.com/sindresorhus/pure/blob/master/readme.md#install) for more detailed instructions.
@@ -34,6 +45,7 @@ Defines the prompt symbol color. The default value is `magenta`; you can use any
 ### `PURE_PROMPT_PATH_FORMATTING`
 
 Defines how to display the path. Default value: `%c`. See [Prompt Expansion](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for more.
+
 
 ## License
 
